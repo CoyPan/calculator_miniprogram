@@ -1,0 +1,9 @@
+{
+  "miniprogramRoot": "./",
+  "projectname": "caculator_mini",
+  "appid": "wxb253b2fda0d9789f",
+  "setting": {
+    "es6": false,
+    "minified": false
+  }
+}
