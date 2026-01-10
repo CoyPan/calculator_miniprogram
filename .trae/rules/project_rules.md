@@ -1,0 +1,1 @@
+[text](../../.codebuddy/rules/design_guidelines.mdc) [text](../../.codebuddy/rules/ui_design_strategy.mdc)

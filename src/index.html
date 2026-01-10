@@ -1,17 +1,156 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh-CN">
 <head>
-  <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
-  <meta content="width=device-width,initial-scale=1,user-scalable=no" name="viewport">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-touch-fullscreen" content="yes">
-  <meta name="format-detection" content="telephone=no,address=no">
-  <meta name="apple-mobile-web-app-status-bar-style" content="white">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" >
-  <title>caculator_mini</title>
-  <script><%= htmlWebpackPlugin.options.script %></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>生活算力 - 手绘 Base64 版</title>
+    <style>
+        :root {
+            --bg-base: #C5E2DF;
+            --text-dark: #3D4446;
+            --text-light: #7F8C8D;
+            
+            /* 图标 Base64 数据 - 保持手绘抖动线条风格 */
+            /* 1. 投资收益 (钱币) */
+            --icon-invest: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%233D4446' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 2v20M17 5l-5-3-5 3M9 19l3 3 3-3'/%3E%3Ccircle cx='12' cy='12' r='4'/%3E%3C/svg%3E");
+            
+            /* 2. BMI (电子秤) */
+            --icon-bmi: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%233D4446' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 5c0-1.1.9-2 2-2h10a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V5z'/%3E%3Ccircle cx='12' cy='10' r='3'/%3E%3Cpath d='M9 17h6'/%3E%3C/svg%3E");
+            
+            /* 3. 亲戚称呼 (爱心/社交) */
+            --icon-social: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%233D4446' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z'/%3E%3C/svg%3E");
+            
+            /* 4. 时间 (闹钟) */
+            --icon-time: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%233D4446' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='9'/%3E%3Cpolyline points='12 7 12 12 15 15'/%3E%3C/svg%3E");
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "PingFang SC", "Hiragino Sans GB", sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-base);
+            background: radial-gradient(circle at center, #D9EDEA 0%, var(--bg-base) 100%);
+            min-height: 100vh;
+            padding: 40px 24px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .header h1 {
+            color: var(--text-dark);
+            font-size: 32px;
+            font-weight: 900;
+            letter-spacing: 1px;
+        }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            width: 100%;
+            max-width: 500px;
+        }
+
+        .card {
+            background: #FFFFFF;
+            border-radius: 28px;
+            padding: 24px 16px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-decoration: none;
+            box-shadow: 0 10px 0px rgba(0,0,0,0.05); /* 模拟纸张厚度 */
+            transition: all 0.2s ease;
+            border: 3px solid #FFFFFF;
+        }
+
+        .card:active {
+            transform: translateY(6px);
+            box-shadow: 0 4px 0px rgba(0,0,0,0.05);
+        }
+
+        /* 图标容器，模拟手绘圆框 */
+        .icon-box {
+            width: 70px;
+            height: 70px;
+            margin-bottom: 12px;
+            background-size: 35px;
+            background-repeat: no-repeat;
+            background-position: center;
+            border: 2px solid var(--text-dark);
+            /* 核心：模拟手绘的不规则圆角 */
+            border-radius: 255px 25px 225px 25px/25px 225px 25px 255px;
+        }
+
+        /* 指定每个卡片的背景色和图标 */
+        .invest .icon-box { background-color: #FFD29D; background-image: var(--icon-invest); }
+        .bmi    .icon-box { background-color: #B8E4D5; background-image: var(--icon-bmi); }
+        .social .icon-box { background-color: #FFC5C5; background-image: var(--icon-social); }
+        .time   .icon-box { background-color: #A2C2E8; background-image: var(--icon-time); }
+
+        .card h3 {
+            color: var(--text-dark);
+            font-size: 17px;
+            font-weight: 800;
+            margin-top: 5px;
+        }
+
+        .card p {
+            color: var(--text-light);
+            font-size: 12px;
+            margin-top: 4px;
+        }
+
+        /* 移动端适配 */
+        @media (max-width: 380px) {
+            .grid-container { grid-template-columns: 1fr; }
+            .card { flex-direction: row; padding: 15px 20px; }
+            .icon-box { margin-bottom: 0; margin-right: 15px; width: 55px; height: 55px; background-size: 28px; }
+        }
+    </style>
 </head>
 <body>
-  <div id="app"></div>
+
+    <div class="header">
+        <h1>生活算力 🥤</h1>
+        <p>每一天都值得精打细算</p>
+    </div>
+
+    <div class="grid-container">
+        <a href="#" class="card invest">
+            <div class="icon-box"></div>
+            <h3>投资收益</h3>
+            <p>钱包鼓鼓哒</p>
+        </a>
+
+        <a href="#" class="card bmi">
+            <div class="icon-box"></div>
+            <h3>健康BMI</h3>
+            <p>身材棒棒哒</p>
+        </a>
+
+        <a href="#" class="card social">
+            <div class="icon-box"></div>
+            <h3>亲戚称呼</h3>
+            <p>社交不尴尬</p>
+        </a>
+
+        <a href="#" class="card time">
+            <div class="icon-box"></div>
+            <h3>时间助手</h3>
+            <p>珍惜每一刻</p>
+        </a>
+    </div>
+
 </body>
 </html>

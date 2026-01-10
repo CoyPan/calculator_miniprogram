@@ -1,0 +1,176 @@
+// 设计规范变量 - 手绘卡通风格（尺寸加大一半）
+@bg-base: #C5E2DF;       // 基础背景色
+@text-dark: #4A4A4A;      // 主文字色
+@text-light: #8E8E8E;     // 次文字色
+// 手绘色板
+@color-orange: #FFD29D;   // 橙色
+@color-green: #B8E4D5;    // 绿色
+@color-pink: #FFC5C5;     // 粉色
+@color-blue: #A2C2E8;     // 蓝色
+@border-radius-lg: 30px;  // 卡片圆角（原20px）
+@card-bg: #FFFFFF;        // 卡片背景
+@shadow-sm: 0 15px 30px rgba(0, 0, 0, 0.075); // 卡片阴影（原10px 20px）
+@icon-box-size: 97.5px;   // 图标框尺寸（原65px）
+@icon-border-width: 3px;  // 图标框边框宽度（原2px）
+
+// 动画效果
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes cardEnter {
+    from {
+        opacity: 0;
+        transform: scale(0.95) translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+
+.fade-in {
+    animation: fadeIn 0.5s ease-out forwards;
+}
+
+.slide-down {
+    animation: slideDown 0.6s ease-out forwards;
+}
+
+.card-enter {
+    animation: cardEnter 0.4s ease-out forwards;
+}
+
+.index {
+    min-height: 100vh;
+    background: radial-gradient(ellipse at 50% 30%, #F0FBF9 0%, #E6F5F2 25%, #D9EDEA 50%, #D0E6E3 75%, @bg-base 100%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 30px;
+    box-sizing: border-box;
+
+    .header {
+            text-align: center;
+            margin-bottom: 60px;
+
+            .title {
+                color: @text-dark;
+                font-size: 54px;
+                font-weight: bold;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 15px;
+                margin-bottom: 0;
+            }
+
+            .subtitle {
+                color: @text-light;
+                font-size: 24px;
+                margin-top: 12px;
+            }
+        }
+
+    .calculator-list {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 30px;
+            max-width: 600px;
+            width: 100%;
+
+        .calculator-card {
+                background: @card-bg;
+                border-radius: @border-radius-lg;
+                padding: 36px;
+                text-decoration: none;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                box-shadow: @shadow-sm;
+                transition: transform 0.2s;
+                cursor: pointer;
+
+            .icon {
+                width: 120px;
+                height: 120px;
+                flex-shrink: 0;
+                margin-bottom: 24px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                position: relative;
+                /* 不规则圆角模拟手绘感 */
+                border-radius: 255px 22.5px 225px 22.5px/22.5px 225px 22.5px 255px;
+                border: @icon-border-width solid #4A4A4A;
+                /* 设置背景图片属性 */
+                background-size: 52.5px;
+                background-repeat: no-repeat;
+                background-position: center;
+            }
+
+            .name {
+                font-size: 30px;
+                color: @text-dark;
+                font-weight: bold;
+                margin-bottom: 12px;
+                text-align: center;
+                word-break: break-word;
+                display: block;
+                white-space: normal;
+                width: 100%;
+            }
+
+            .description {
+                font-size: 21px;
+                color: @text-light;
+                line-height: 1.5;
+                text-align: center;
+                word-break: break-word;
+                display: block;
+                white-space: normal;
+                width: 100%;
+            }
+
+            &:active {
+                transform: scale(0.96);
+            }
+
+            // 不同类型计算器的特色图标背景
+            &.finance .icon {
+                background-color: @color-orange;
+            }
+
+            &.life .icon {
+                background-color: @color-green;
+            }
+
+            &.fun .icon {
+                background-color: @color-pink;
+            }
+
+            &.time .icon {
+                background-color: @color-blue;
+            }
+        }
+    }
+}
+
+// 无需响应式设计，当前小程序仅在手机端运行
