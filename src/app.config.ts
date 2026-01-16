@@ -10,5 +10,8 @@ export default defineAppConfig({
     navigationBarBackgroundColor: '#fff',
     navigationBarTitleText: '生活算力',
     navigationBarTextStyle: 'black'
-  }
+  },
+  usingComponents: {
+    // 其他组件
+  },
 })
